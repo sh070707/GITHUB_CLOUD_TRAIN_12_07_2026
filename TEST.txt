@@ -1,0 +1,80 @@
+Distributed VCS vs Centralized VCS
+Centralized VCS (CVCS)
+
+Single central server holds the entire history and all versions of the code.
+Developers check out a working copy from that server, but they don't have the full history locally—just the files.
+Every meaningful operation (commit, view history, compare versions) requires network access to the central server.
+If the central server goes down, no one can commit, view history, or collaborate.
+If the server's disk is lost without backups, the entire project history is gone.
+Examples: SVN (Subversion), CVS, Perforce
+
+Basic workflow:
+Developer → checks out → Central Server (has full history)
+Developer → commits directly → Central Server
+Distributed VCS (DVCS)
+
+Every developer's machine has a full copy of the entire repository, including complete history.
+You can commit, branch, view logs, and diff entirely offline, since everything is local.
+There's no single point of failure — since every clone is essentially a full backup of the project.
+Syncing with others happens via push/pull/fetch operations to remote repositories (which are just other copies, not inherently "central" like in CVCS).
+Examples: Git, Mercurial, Bazaar
+
+Basic workflow:
+Developer → clones → Full Repository (local, complete history)
+Developer → commits locally
+Developer → pushes/pulls → Remote Repository (e.g., GitHub)
+Key Differences Table
+FeatureCentralized VCSDistributed VCSRepository locationOne central serverEvery user has full copyOffline workLimited (just editing)Full (commit, branch, history)SpeedSlower (network-dependent)Faster (local operations)Single point of failureYesNoBranching/mergingOften clunkyLightweight and fastHistory accessNeeds server connectionAvailable locally, anytimeExamplesSVN, CVS, PerforceGit, Mercurial
+In short:
+
+CVCS = one master copy, everyone talks to it directly.
+DVCS = everyone has the whole repo, and they sync copies with each other.
+
+This is why Git (a DVCS) became so dominant — it gives you speed, offline capability, and resilience that centralized systems can't match, especially valuable for open-source and distributed teams.CAN GITLHUB BE CONFIGURED AS CENTRALISEDReconciled GitHub's centralized capabilities with Git's distributed architectureReconciled GitHub's centralized capabilities with Git's distributed architectureCan GitHub Be Configured as Centralized?
+Short answer: Yes, in workflow/usage, but not in the underlying technology.
+Here's the important distinction: Git itself is always distributed — that never changes. But how you use GitHub can be made to resemble a centralized workflow.
+Why Git stays distributed
+Even when you use GitHub, every developer who clones a repo still gets:
+
+The full history
+The ability to commit offline
+A complete local copy of the repository
+
+This is true no matter how you configure GitHub. You can't turn off Git's distributed nature at the protocol level.
+How GitHub can behave like a centralized system
+Teams often set up GitHub in a way that mimics centralized workflows, especially for control and simplicity:
+1. Single Source of Truth
+
+Everyone treats one GitHub repo (usually on main/master) as the official, authoritative version.
+Even though each dev has a full local copy, in practice, no one trusts their local repo as "the real one" — only GitHub's copy counts.
+
+2. Restricted push access
+
+Only certain people (e.g., maintainers/admins) can push directly to main.
+Others must go through Pull Requests, reviews, and approvals.
+This resembles centralized "gatekeeping" of changes.
+
+3. Branch protection rules
+GitHub lets you enforce:
+
+No direct commits to main
+Required PR reviews before merging
+Required status checks (CI/CD) before merge
+No force-pushes or deletions
+
+4. Centralized CI/CD & deployment
+
+Deployments are typically triggered only from the central GitHub repo (e.g., merges to main trigger deployment).
+This creates a de facto single point of control, even though the underlying data is distributed.
+
+5. Single remote workflow
+
+Many teams configure their workflow so everyone pushes/pulls from one shared remote (origin) instead of using a truly decentralized peer-to-peer model (like pulling directly from teammates' repos, which Git technically allows).
+
+Comparison
+AspectTrue DVCS BehaviorGitHub "Centralized-style" UsageLocal full history✅ Yes✅ Yes (unchanged)Offline commits✅ Yes✅ Yes (unchanged)Peer-to-peer syncing✅ Possible❌ Discouraged/not usedAuthoritative repo❌ No single "truth"✅ One repo treated as truthWrite access controlDecentralizedCentralized via permissions
+Bottom line
+
+GitHub adds a centralized workflow layer (permissions, PRs, protected branches, CI/CD triggers) on top of a fundamentally distributed technology (Git).
+
+So when people say "GitHub is centralized," they usually mean the workflow/hosting model, not the version control mechanics — Git under the hood is still 100% distributed.
